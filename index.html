@@ -6,13 +6,15 @@
     <title>Colacho IA — Agente empresarial inteligente</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background: #0d0d0d; color: #ffffff; }
-        header { background: #111111; padding: 20px 40px; border-bottom: 2px solid #1a3a5f; display: flex; align-items: center; justify-content: space-between; }
+        body { font-family: Arial, sans-serif; background: #0a0a1a; color: #ffffff; }
+        canvas { position: fixed; top: 0; left: 0; z-index: 0; opacity: 0.35; }
+        header, .hero, .seccion, footer { position: relative; z-index: 1; }
+        header { background: rgba(10,10,26,0.92); padding: 20px 40px; border-bottom: 2px solid #1a3a5f; display: flex; align-items: center; justify-content: space-between; backdrop-filter: blur(4px); position: fixed; top: 0; width: 100%; z-index: 100; }
         header h1 { font-size: 24px; color: #ffffff; }
         header p { color: #1877F2; font-size: 13px; margin-top: 4px; }
         nav a { color: #aaaaaa; text-decoration: none; margin-left: 24px; font-size: 14px; }
         nav a:hover { color: #1877F2; }
-        .hero { text-align: center; padding: 100px 20px; background: #111111; border-bottom: 1px solid #1a3a5f; }
+        .hero { text-align: center; padding: 160px 20px 100px; border-bottom: 1px solid #1a3a5f; }
         .hero h2 { font-size: 42px; margin-bottom: 20px; color: #ffffff; line-height: 1.2; }
         .hero h2 span { color: #1877F2; }
         .hero p { font-size: 18px; color: #aaaaaa; max-width: 600px; margin: 0 auto 40px; }
@@ -22,7 +24,7 @@
         .seccion h3 { font-size: 28px; margin-bottom: 30px; color: #1877F2; text-align: center; }
         .seccion p { color: #aaaaaa; line-height: 1.8; margin-bottom: 12px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 20px; }
-        .card { background: #1a1a1a; border: 1px solid #1a3a5f; border-radius: 10px; padding: 28px; }
+        .card { background: rgba(26,26,40,0.85); border: 1px solid #1a3a5f; border-radius: 10px; padding: 28px; backdrop-filter: blur(4px); }
         .card .icono { font-size: 32px; margin-bottom: 14px; }
         .card h4 { font-size: 16px; margin-bottom: 10px; color: #ffffff; }
         .card p { font-size: 14px; color: #aaaaaa; line-height: 1.7; }
@@ -35,17 +37,24 @@
         .paso .numero { font-size: 42px; font-weight: bold; color: #1877F2; margin-bottom: 14px; }
         .paso h4 { font-size: 16px; margin-bottom: 10px; color: #ffffff; }
         .paso p { font-size: 14px; color: #aaaaaa; }
-        .empresas { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 20px; }
-        .empresa { background: #1a1a1a; border: 1px solid #1a3a5f; border-radius: 20px; padding: 10px 20px; color: #aaaaaa; font-size: 14px; }
+        .empresas-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 20px; }
+        .empresa-card { background: rgba(26,26,40,0.85); border: 1px solid #1a3a5f; border-radius: 10px; padding: 24px; backdrop-filter: blur(4px); }
+        .empresa-card h4 { font-size: 16px; margin-bottom: 8px; color: #ffffff; }
+        .empresa-card p { font-size: 14px; color: #aaaaaa; line-height: 1.7; }
+        .cta { text-align: center; margin-top: 40px; }
+        .cta a { background: #1877F2; color: #ffffff; padding: 14px 32px; border-radius: 6px; text-decoration: none; font-size: 16px; }
+        .cta a:hover { background: #1a3a5f; }
         .faq { max-width: 700px; margin: 20px auto 0; }
         .faq-item { margin-bottom: 20px; border-bottom: 1px solid #1a3a5f; padding-bottom: 20px; }
         .faq-item h4 { color: #ffffff; margin-bottom: 8px; font-size: 15px; }
         .faq-item p { color: #aaaaaa; font-size: 14px; line-height: 1.7; }
-        footer { text-align: center; padding: 40px; background: #111111; color: #555555; font-size: 13px; border-top: 2px solid #1a3a5f; }
+        footer { text-align: center; padding: 40px; background: rgba(10,10,26,0.95); color: #555555; font-size: 13px; border-top: 2px solid #1a3a5f; }
         footer a { color: #1877F2; text-decoration: none; margin: 0 12px; }
     </style>
 </head>
 <body>
+
+<canvas id="fondo"></canvas>
 
 <header>
     <div>
@@ -62,7 +71,7 @@
 
 <div class="hero">
     <h2>El agente que <span>aprende tu negocio</span><br>antes de atender a tus clientes</h2>
-    <p>Colacho es un sistema de atención al cliente con inteligencia artificial diseñado para cualquier tipo de empresa.</p>
+    <p>Colacho es un agente empresarial con inteligencia artificial que trabaja en cualquier área de tu negocio — desde atención al cliente hasta administración y marketing.</p>
     <a href="#como-empezar">Quiero empezar</a>
 </div>
 
@@ -95,9 +104,9 @@
             <p>Registra automáticamente cada cliente, cada consulta y cada conversación. Todo en un panel visual.</p>
         </div>
         <div class="card">
-            <div class="icono">👁️</div>
-            <h4>Modo observador</h4>
-            <p>Antes de activarse, observa cómo vos atendés durante una semana y aprende tu estilo.</p>
+            <div class="icono">📊</div>
+            <h4>Administración y más</h4>
+            <p>Control de stock, planillas, contabilidad, marketing. Colacho se adapta a lo que tu empresa necesita.</p>
         </div>
     </div>
 </div>
@@ -121,16 +130,28 @@
 </div>
 
 <div class="seccion">
-    <h3>¿Para qué tipo de empresa?</h3>
-    <div class="empresas">
-        <div class="empresa">✈️ Agencias de viajes</div>
-        <div class="empresa">🏥 Clínicas</div>
-        <div class="empresa">🏠 Inmobiliarias</div>
-        <div class="empresa">👟 Zapaterías</div>
-        <div class="empresa">🍕 Restaurantes</div>
-        <div class="empresa">💇 Salones de belleza</div>
-        <div class="empresa">🏋️ Gimnasios</div>
-        <div class="empresa">Y cualquier negocio que atienda clientes</div>
+    <h3>¿Tu empresa atiende clientes?</h3>
+    <p style="text-align:center; max-width:600px; margin: 0 auto 30px;">Entonces Colacho es para vos. No importa el rubro ni el tamaño. Contanos qué problema querés resolver y lo armamos juntos.</p>
+    <div class="empresas-grid">
+        <div class="empresa-card">
+            <h4>✈️ ¿Querés atender más consultas sin contratar personal?</h4>
+            <p>Colacho responde solo, manda folletos y agenda citas mientras vos te enfocás en cerrar ventas.</p>
+        </div>
+        <div class="empresa-card">
+            <h4>📦 ¿Necesitás control de stock automático?</h4>
+            <p>Colacho puede registrar entradas, salidas y alertarte cuando algo está por agotarse.</p>
+        </div>
+        <div class="empresa-card">
+            <h4>📣 ¿Querés hacer marketing sin saber de marketing?</h4>
+            <p>Colacho genera contenido, responde comentarios y mantiene activos tus canales digitales.</p>
+        </div>
+        <div class="empresa-card">
+            <h4>🧾 ¿Necesitás orden en tu administración?</h4>
+            <p>Planillas, registros, recordatorios. Colacho organiza la información de tu negocio de forma automática.</p>
+        </div>
+    </div>
+    <div class="cta">
+        <a href="mailto:colachosistemaempresarial@gmail.com">Contanos tu caso</a>
     </div>
 </div>
 
@@ -149,8 +170,8 @@
         </div>
         <div class="paso">
             <div class="numero">3</div>
-            <h4>Empieza a atender</h4>
-            <p>Colacho observa una semana y después se activa solo. Tus clientes ya tienen atención automática.</p>
+            <h4>Empieza a trabajar</h4>
+            <p>Colacho observa una semana y después se activa solo. Tu negocio ya tiene inteligencia artificial.</p>
         </div>
     </div>
 </div>
@@ -194,6 +215,65 @@
         <a href="mailto:colachosistemaempresarial@gmail.com">Contacto</a>
     </p>
 </footer>
+
+<script>
+const canvas = document.getElementById('fondo');
+const ctx = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+
+const nodos = [];
+const cantidad = 60;
+
+for (let i = 0; i < cantidad; i++) {
+    nodos.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        r: Math.random() * 2 + 1
+    });
+}
+
+function dibujar() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let i = 0; i < nodos.length; i++) {
+        const n = nodos[i];
+        n.x += n.vx;
+        n.y += n.vy;
+        if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
+        if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(24, 119, 242, 0.6)';
+        ctx.fill();
+
+        for (let j = i + 1; j < nodos.length; j++) {
+            const m = nodos[j];
+            const dist = Math.hypot(n.x - m.x, n.y - m.y);
+            if (dist < 150) {
+                ctx.beginPath();
+                ctx.moveTo(n.x, n.y);
+                ctx.lineTo(m.x, m.y);
+                ctx.strokeStyle = `rgba(24, 119, 242, ${0.15 * (1 - dist / 150)})`;
+                ctx.lineWidth = 0.5;
+                ctx.stroke();
+            }
+        }
+    }
+    requestAnimationFrame(dibujar);
+}
+
+dibujar();
+</script>
 
 </body>
 </html>
