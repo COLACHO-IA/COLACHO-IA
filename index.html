@@ -3,51 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Colacho IA — Agente empresarial inteligente</title>
+    <title>Colacho IA — Sistema empresarial con inteligencia artificial</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: Arial, sans-serif; background: #0a0a1a; color: #ffffff; }
         canvas { position: fixed; top: 0; left: 0; z-index: 0; }
-        header, .hero, .seccion, footer { position: relative; z-index: 1; }
+        header, .hero, .seccion, .seccion-oscura, footer { position: relative; z-index: 1; }
         header { background: rgba(10,10,26,0.92); padding: 20px 40px; border-bottom: 2px solid #1a3a5f; display: flex; align-items: center; justify-content: space-between; backdrop-filter: blur(4px); position: fixed; top: 0; width: 100%; z-index: 100; }
         header h1 { font-size: 24px; color: #ffffff; }
         header p { color: #1877F2; font-size: 13px; margin-top: 4px; }
         nav a { color: #aaaaaa; text-decoration: none; margin-left: 24px; font-size: 14px; }
         nav a:hover { color: #1877F2; }
+
+        /* HERO */
         .hero { text-align: center; padding: 160px 20px 100px; border-bottom: 1px solid #1a3a5f; }
-        .hero h2 { font-size: 42px; margin-bottom: 20px; color: #ffffff; line-height: 1.2; }
+        .hero img { width: 130px; margin-bottom: 30px; }
+        .hero h2 { font-size: 44px; margin-bottom: 20px; color: #ffffff; line-height: 1.2; max-width: 750px; margin: 0 auto 20px; }
         .hero h2 span { color: #1877F2; }
-        .hero p { font-size: 18px; color: #aaaaaa; max-width: 600px; margin: 0 auto 40px; }
-        .hero a { background: #1877F2; color: #ffffff; padding: 14px 32px; border-radius: 6px; text-decoration: none; font-size: 16px; }
-        .hero a:hover { background: #1a3a5f; }
+        .hero p { font-size: 18px; color: #aaaaaa; max-width: 620px; margin: 0 auto 40px; line-height: 1.7; }
+        .btn-principal { display: inline-block; background: #1877F2; color: #ffffff; padding: 16px 36px; border-radius: 6px; text-decoration: none; font-size: 16px; font-weight: bold; margin-top: 10px; }
+        .btn-principal:hover { background: #1a3a5f; }
+        .btn-secundario { display: inline-block; background: transparent; color: #1877F2; padding: 16px 36px; border-radius: 6px; text-decoration: none; font-size: 16px; border: 1px solid #1877F2; margin-top: 10px; margin-left: 12px; }
+        .btn-secundario:hover { background: #1a3a5f; color: #ffffff; }
+
+        /* SECCIONES */
         .seccion { padding: 70px 40px; max-width: 900px; margin: 0 auto; border-bottom: 1px solid #1a3a5f; }
-        .seccion h3 { font-size: 28px; margin-bottom: 30px; color: #1877F2; text-align: center; }
+        .seccion-oscura { padding: 70px 40px; background: rgba(15,15,35,0.7); border-bottom: 1px solid #1a3a5f; }
+        .seccion-oscura-inner { max-width: 900px; margin: 0 auto; }
+        .seccion h3, .seccion-oscura h3 { font-size: 28px; margin-bottom: 12px; color: #1877F2; text-align: center; }
+        .seccion .subtitulo, .seccion-oscura .subtitulo { text-align: center; color: #aaaaaa; font-size: 16px; margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.7; }
         .seccion p { color: #aaaaaa; line-height: 1.8; margin-bottom: 12px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 20px; }
-        .card { background: rgba(26,26,40,0.85); border: 1px solid #1a3a5f; border-radius: 10px; padding: 28px; backdrop-filter: blur(4px); }
-        .card .icono { font-size: 32px; margin-bottom: 14px; }
-        .card h4 { font-size: 16px; margin-bottom: 10px; color: #ffffff; }
-        .card p { font-size: 14px; color: #aaaaaa; line-height: 1.7; }
+
+        /* GRID DE DOLORES */
+        .grid-dolores { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-top: 20px; }
+        .card-dolor { background: rgba(26,26,40,0.85); border: 1px solid #1a3a5f; border-radius: 10px; padding: 28px; backdrop-filter: blur(4px); }
+        .card-dolor h4 { font-size: 17px; margin-bottom: 10px; color: #ffffff; }
+        .card-dolor h4 span { color: #1877F2; font-size: 20px; margin-right: 8px; }
+        .card-dolor p { font-size: 14px; color: #aaaaaa; line-height: 1.7; }
+
+        /* CANALES */
         .canales { display: flex; justify-content: center; gap: 40px; margin-top: 30px; flex-wrap: wrap; }
         .canal { text-align: center; }
         .canal .icono { font-size: 48px; margin-bottom: 10px; }
         .canal p { color: #aaaaaa; font-size: 14px; }
-        .pasos { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; }
-        .paso { text-align: center; padding: 24px; }
+
+        /* MÓDULOS */
+        .modulos { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 30px; }
+        .modulo { background: rgba(24,119,242,0.1); border: 1px solid #1877F2; border-radius: 30px; padding: 10px 22px; color: #1877F2; font-size: 14px; }
+
+        /* PASOS */
+        .pasos { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 20px; }
+        .paso { text-align: center; padding: 28px; background: rgba(26,26,40,0.85); border: 1px solid #1a3a5f; border-radius: 10px; }
         .paso .numero { font-size: 42px; font-weight: bold; color: #1877F2; margin-bottom: 14px; }
         .paso h4 { font-size: 16px; margin-bottom: 10px; color: #ffffff; }
-        .paso p { font-size: 14px; color: #aaaaaa; }
-        .empresas-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 20px; }
-        .empresa-card { background: rgba(26,26,40,0.85); border: 1px solid #1a3a5f; border-radius: 10px; padding: 24px; backdrop-filter: blur(4px); }
-        .empresa-card h4 { font-size: 16px; margin-bottom: 8px; color: #ffffff; }
-        .empresa-card p { font-size: 14px; color: #aaaaaa; line-height: 1.7; }
-        .cta { text-align: center; margin-top: 40px; }
-        .cta a { background: #1877F2; color: #ffffff; padding: 14px 32px; border-radius: 6px; text-decoration: none; font-size: 16px; }
-        .cta a:hover { background: #1a3a5f; }
+        .paso p { font-size: 14px; color: #aaaaaa; line-height: 1.7; }
+
+        /* FAQ */
         .faq { max-width: 700px; margin: 20px auto 0; }
         .faq-item { margin-bottom: 20px; border-bottom: 1px solid #1a3a5f; padding-bottom: 20px; }
         .faq-item h4 { color: #ffffff; margin-bottom: 8px; font-size: 15px; }
         .faq-item p { color: #aaaaaa; font-size: 14px; line-height: 1.7; }
+
+        /* CTA FINAL */
+        .cta-final { text-align: center; padding: 80px 20px; background: rgba(15,15,35,0.8); border-bottom: 1px solid #1a3a5f; }
+        .cta-final h3 { font-size: 30px; margin-bottom: 16px; color: #ffffff; }
+        .cta-final p { color: #aaaaaa; font-size: 16px; max-width: 520px; margin: 0 auto 36px; line-height: 1.7; }
+        .cta-botones { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+
+        /* FOOTER */
         footer { text-align: center; padding: 40px; background: rgba(10,10,26,0.95); color: #555555; font-size: 13px; border-top: 2px solid #1a3a5f; }
         footer a { color: #1877F2; text-decoration: none; margin: 0 12px; }
     </style>
@@ -59,127 +82,135 @@
 <header>
     <div>
         <h1>Colacho IA</h1>
-        <p>Agente empresarial inteligente</p>
+        <p>Sistema empresarial con inteligencia artificial</p>
     </div>
     <nav>
-        <a href="#caracteristicas">Características</a>
-        <a href="#canales">Canales</a>
-        <a href="#como-empezar">Cómo empezar</a>
+        <a href="#resuelve">Qué resuelve</a>
+        <a href="#como-funciona">Cómo funciona</a>
+        <a href="#faq">Preguntas</a>
         <a href="#contacto">Contacto</a>
     </nav>
 </header>
 
+<!-- HERO -->
 <div class="hero">
-   <img src="ChatGPT_Image_30_mar_2026__23_41_32-removebg-preview.png" style="width:160px; margin-bottom:30px;" alt="Colacho IA">
-    <h2>El agente que <span>aprende tu negocio</span><br>antes de atender a tus clientes</h2>
-    <p>Colacho es un agente empresarial con inteligencia artificial que trabaja en cualquier área de tu negocio — desde atención al cliente hasta administración y marketing.</p>
-    <a href="#como-empezar">Quiero empezar</a>
+    <img src="ChatGPT_Image_30_mar_2026__23_41_32-removebg-preview.png" alt="Colacho IA">
+    <h2>Tu negocio necesita orden, respuestas y seguimiento.<br><span>Colacho lo aprende y lo hace con vos.</span></h2>
+    <p>Colacho es un sistema empresarial con IA que aprende cómo funciona tu negocio, responde clientes, organiza información y te ayuda a trabajar mejor sin empezar de cero.</p>
+    <a href="#contacto" class="btn-principal">Quiero ver si sirve para mi negocio</a>
+    <a href="#como-funciona" class="btn-secundario">Cómo funciona</a>
 </div>
 
-<div class="seccion" id="caracteristicas">
-    <h3>¿Qué puede hacer Colacho?</h3>
-    <div class="grid">
-        <div class="card">
-            <div class="icono">🧠</div>
-            <h4>Aprende tu negocio</h4>
-            <p>Lee tus documentos, folletos e imágenes y aprende qué vendés, cómo lo vendés y cuáles son tus políticas.</p>
+<!-- LO QUE RESUELVE -->
+<div class="seccion" id="resuelve">
+    <h3>Lo que Colacho resuelve en tu negocio</h3>
+    <p class="subtitulo">No es una lista de funciones. Son los problemas reales que Colacho resuelve para que tu negocio funcione mejor.</p>
+    <div class="grid-dolores">
+        <div class="card-dolor">
+            <h4><span>✓</span>No perder consultas</h4>
+            <p>Colacho responde, registra y sigue conversaciones para que no se te escapen oportunidades de venta.</p>
         </div>
-        <div class="card">
-            <div class="icono">💬</div>
-            <h4>Atiende 24/7</h4>
-            <p>Responde consultas de clientes en cualquier momento, incluso cuando vos no estás disponible.</p>
+        <div class="card-dolor">
+            <h4><span>✓</span>No depender de estar vos siempre</h4>
+            <p>Atiende, organiza y ejecuta tareas repetitivas aunque vos no estés encima. Tu negocio funciona aunque vos no estés.</p>
         </div>
-        <div class="card">
-            <div class="icono">📎</div>
-            <h4>Manda folletos automáticamente</h4>
-            <p>Detecta qué busca el cliente y le manda la imagen o PDF correcto sin que nadie toque nada.</p>
+        <div class="card-dolor">
+            <h4><span>✓</span>No tener todo desordenado</h4>
+            <p>Centraliza clientes, mensajes, archivos y procesos en un mismo sistema. Todo en un lugar.</p>
         </div>
-        <div class="card">
-            <div class="icono">🎙️</div>
-            <h4>Entiende audios</h4>
-            <p>Transcribe los mensajes de voz que mandan los clientes y responde como si fueran texto.</p>
+        <div class="card-dolor">
+            <h4><span>✓</span>No arrancar de cero</h4>
+            <p>Primero aprende cómo funciona tu negocio, después se activa. No tenés que enseñarle todo manualmente.</p>
         </div>
-        <div class="card">
-            <div class="icono">📋</div>
-            <h4>CRM incluido</h4>
-            <p>Registra automáticamente cada cliente, cada consulta y cada conversación. Todo en un panel visual.</p>
+        <div class="card-dolor">
+            <h4><span>✓</span>No crecer en caos</h4>
+            <p>Puede empezar por atención al cliente y crecer después hacia stock, administración, marketing y más.</p>
         </div>
-        <div class="card">
-            <div class="icono">📊</div>
-            <h4>Administración y más</h4>
-            <p>Control de stock, planillas, contabilidad, marketing. Colacho se adapta a lo que tu empresa necesita.</p>
+        <div class="card-dolor">
+            <h4><span>✓</span>No perder tiempo en tareas repetitivas</h4>
+            <p>Lo que hoy hacés a mano, Colacho lo puede hacer solo. Tu tiempo vale más que responder lo mismo 20 veces.</p>
         </div>
     </div>
 </div>
 
-<div class="seccion" id="canales">
-    <h3>Canales que maneja</h3>
-    <div class="canales">
-        <div class="canal">
-            <div class="icono">💚</div>
-            <p>WhatsApp</p>
-        </div>
-        <div class="canal">
-            <div class="icono">📸</div>
-            <p>Instagram</p>
-        </div>
-        <div class="canal">
-            <div class="icono">📘</div>
-            <p>Facebook</p>
+<!-- CANALES -->
+<div class="seccion-oscura" id="canales">
+    <div class="seccion-oscura-inner">
+        <h3>Atendé todos tus canales desde un mismo sistema</h3>
+        <p class="subtitulo">Colacho puede trabajar con WhatsApp, Instagram y Facebook al mismo tiempo, sin que tengas que responder cada canal por separado.</p>
+        <div class="canales">
+            <div class="canal">
+                <div class="icono">💚</div>
+                <p>WhatsApp</p>
+            </div>
+            <div class="canal">
+                <div class="icono">📸</div>
+                <p>Instagram</p>
+            </div>
+            <div class="canal">
+                <div class="icono">📘</div>
+                <p>Facebook</p>
+            </div>
         </div>
     </div>
 </div>
 
+<!-- NO ES SOLO PARA MENSAJES -->
 <div class="seccion">
-    <h3>¿Tu empresa atiende clientes?</h3>
-    <p style="text-align:center; max-width:600px; margin: 0 auto 30px;">Entonces Colacho es para vos. No importa el rubro ni el tamaño. Contanos qué problema querés resolver y lo armamos juntos.</p>
-    <div class="empresas-grid">
-        <div class="empresa-card">
-            <h4>✈️ ¿Querés atender más consultas sin contratar personal?</h4>
-            <p>Colacho responde solo, manda folletos y agenda citas mientras vos te enfocás en cerrar ventas.</p>
-        </div>
-        <div class="empresa-card">
-            <h4>📦 ¿Necesitás control de stock automático?</h4>
-            <p>Colacho puede registrar entradas, salidas y alertarte cuando algo está por agotarse.</p>
-        </div>
-        <div class="empresa-card">
-            <h4>📣 ¿Querés hacer marketing sin saber de marketing?</h4>
-            <p>Colacho genera contenido, responde comentarios y mantiene activos tus canales digitales.</p>
-        </div>
-        <div class="empresa-card">
-            <h4>🧾 ¿Necesitás orden en tu administración?</h4>
-            <p>Planillas, registros, recordatorios. Colacho organiza la información de tu negocio de forma automática.</p>
-        </div>
-    </div>
-    <div class="cta">
-        <a href="mailto:colachosistemaempresarial@gmail.com">Contanos tu caso</a>
+    <h3>Colacho no es solo para responder mensajes</h3>
+    <p class="subtitulo">Puede empezar ayudando en atención al cliente y después crecer con tu negocio hacia otras áreas operativas. No es un bot, es un sistema que escala con vos.</p>
+    <div class="modulos">
+        <div class="modulo">💬 Atención al cliente</div>
+        <div class="modulo">🧾 Administración</div>
+        <div class="modulo">📣 Marketing</div>
+        <div class="modulo">📦 Stock</div>
+        <div class="modulo">🗂️ Organización interna</div>
+        <div class="modulo">📊 Planillas</div>
+        <div class="modulo">💰 Contabilidad</div>
     </div>
 </div>
 
-<div class="seccion" id="como-empezar">
-    <h3>¿Cómo empezar?</h3>
-    <div class="pasos">
-        <div class="paso">
-            <div class="numero">1</div>
-            <h4>Nos contactás</h4>
-            <p>Nos escribís y te explicamos cómo funciona Colacho para tu tipo de negocio.</p>
-        </div>
-        <div class="paso">
-            <div class="numero">2</div>
-            <h4>Instalamos Colacho</h4>
-            <p>Configuramos el sistema con la información de tu empresa. Vos no tocás nada técnico.</p>
-        </div>
-        <div class="paso">
-            <div class="numero">3</div>
-            <h4>Empieza a trabajar</h4>
-            <p>Colacho observa una semana y después se activa solo. Tu negocio ya tiene inteligencia artificial.</p>
+<!-- CÓMO FUNCIONA -->
+<div class="seccion-oscura" id="como-funciona">
+    <div class="seccion-oscura-inner">
+        <h3>Cómo funciona en la práctica</h3>
+        <p class="subtitulo">No es magia ni promesa vacía. Así trabaja Colacho en un negocio real.</p>
+        <div class="pasos">
+            <div class="paso">
+                <div class="numero">1</div>
+                <h4>Nos contás cómo trabaja tu negocio</h4>
+                <p>Qué vendés, cómo atendés, qué canales usás y qué querés ordenar primero. Sin tecnicismos.</p>
+            </div>
+            <div class="paso">
+                <div class="numero">2</div>
+                <h4>Colacho aprende tu información</h4>
+                <p>Lee tus archivos, entiende tus procesos y observa cómo trabaja tu equipo antes de activarse.</p>
+            </div>
+            <div class="paso">
+                <div class="numero">3</div>
+                <h4>Se activa y empieza a ayudarte</h4>
+                <p>Primero en tareas concretas. Después puede crecer con tu empresa hacia otras áreas.</p>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="seccion">
+<!-- FAQ -->
+<div class="seccion" id="faq">
     <h3>Preguntas frecuentes</h3>
     <div class="faq">
+        <div class="faq-item">
+            <h4>¿Colacho reemplaza a mis empleados?</h4>
+            <p>No. Colacho está pensado para asistir, ordenar y automatizar partes del trabajo. El objetivo es que tu equipo trabaje mejor, no reemplazar personas.</p>
+        </div>
+        <div class="faq-item">
+            <h4>¿Se puede empezar por una sola parte del negocio?</h4>
+            <p>Sí. Podés empezar por atención al cliente y después expandirlo a otras áreas como stock, administración o marketing.</p>
+        </div>
+        <div class="faq-item">
+            <h4>¿Necesito cambiar cómo trabajo hoy?</h4>
+            <p>No al principio. La idea es que Colacho se adapte primero a cómo funciona tu negocio antes de proponerte mejoras.</p>
+        </div>
         <div class="faq-item">
             <h4>¿Necesito saber programación para usar Colacho?</h4>
             <p>No. Vos solo ponés los archivos de tu empresa en una carpeta. Colacho hace el resto solo.</p>
@@ -193,20 +224,21 @@
             <p>Si no tiene la información, avisa al equipo humano. Nunca inventa respuestas.</p>
         </div>
         <div class="faq-item">
-            <h4>¿Funciona con WhatsApp, Instagram y Facebook?</h4>
-            <p>Sí, los tres canales al mismo tiempo desde un mismo sistema.</p>
-        </div>
-        <div class="faq-item">
             <h4>¿Los datos de mis clientes están seguros?</h4>
             <p>Sí. Colacho no comparte ni vende información personal a terceros bajo ninguna circunstancia.</p>
         </div>
     </div>
 </div>
 
-<div class="seccion" id="contacto">
-    <h3>Contacto</h3>
-    <p style="text-align:center;">Para más información escribinos a: <a href="mailto:colachosistemaempresarial@gmail.com" style="color:#1877F2;">colachosistemaempresarial@gmail.com</a></p>
-    <p style="text-align:center; margin-top:12px;"><a href="privacidad.html" style="color:#1877F2;">Política de Privacidad</a></p>
+<!-- CTA FINAL -->
+<div class="cta-final" id="contacto">
+    <h3>Si querés ver si Colacho sirve para tu negocio, escribinos.</h3>
+    <p>No hace falta que tengas nada técnico armado. Contanos qué problema querés resolver y vemos si Colacho puede ayudarte.</p>
+    <div class="cta-botones">
+        <a href="https://wa.me/5493446414349" class="btn-principal">💬 Quiero hablar por WhatsApp</a>
+        <a href="mailto:colachosistemaempresarial@gmail.com" class="btn-secundario">📧 Quiero una demo</a>
+    </div>
+    <p style="margin-top:24px; font-size:13px;"><a href="privacidad.html" style="color:#1877F2;">Política de Privacidad</a></p>
 </div>
 
 <footer>
@@ -228,10 +260,8 @@ function resize() {
 resize();
 window.addEventListener('resize', resize);
 
-// Nodos fijos en posiciones distribuidas
 const cantidad = 18;
 const nodos = [];
-
 for (let i = 0; i < cantidad; i++) {
     nodos.push({
         x: Math.random() * canvas.width,
@@ -239,112 +269,57 @@ for (let i = 0; i < cantidad; i++) {
     });
 }
 
-// Conexiones entre nodos cercanos
 const conexiones = [];
 for (let i = 0; i < nodos.length; i++) {
     for (let j = i + 1; j < nodos.length; j++) {
         const d = Math.hypot(nodos[i].x - nodos[j].x, nodos[i].y - nodos[j].y);
-        if (d < 320) {
-            conexiones.push({ a: i, b: j, largo: d });
-        }
+        if (d < 320) conexiones.push({ a: i, b: j });
     }
 }
 
-// Pulsos que viajan por las conexiones
 const pulsos = [];
-
-function crearPulso() {
+setInterval(() => {
     if (conexiones.length === 0) return;
     const con = conexiones[Math.floor(Math.random() * conexiones.length)];
-    const invertido = Math.random() > 0.5;
-    pulsos.push({
-        con,
-        progreso: 0,
-        velocidad: 0.004 + Math.random() * 0.004,
-        invertido,
-        alpha: 1
-    });
-}
-
-// Crear pulsos cada 300ms
-setInterval(crearPulso, 300);
+    pulsos.push({ con, progreso: 0, velocidad: 0.004 + Math.random() * 0.004, invertido: Math.random() > 0.5 });
+}, 300);
 
 function dibujar() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Dibujar líneas base muy sutiles
     for (const con of conexiones) {
-        const a = nodos[con.a];
-        const b = nodos[con.b];
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(b.x, b.y);
-        ctx.strokeStyle = 'rgba(24, 119, 242, 0.06)';
-        ctx.lineWidth = 0.8;
-        ctx.stroke();
+        const a = nodos[con.a], b = nodos[con.b];
+        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+        ctx.strokeStyle = 'rgba(24,119,242,0.06)'; ctx.lineWidth = 0.8; ctx.stroke();
     }
-
-    // Dibujar nodos
     for (const n of nodos) {
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(24, 119, 242, 0.3)';
-        ctx.fill();
-
-        // Halo suave
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, 6, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(24, 119, 242, 0.06)';
-        ctx.fill();
+        ctx.beginPath(); ctx.arc(n.x, n.y, 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(24,119,242,0.3)'; ctx.fill();
+        ctx.beginPath(); ctx.arc(n.x, n.y, 6, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(24,119,242,0.06)'; ctx.fill();
     }
-
-    // Dibujar pulsos
     for (let i = pulsos.length - 1; i >= 0; i--) {
         const p = pulsos[i];
         p.progreso += p.velocidad;
-
-        if (p.progreso >= 1) {
-            pulsos.splice(i, 1);
-            continue;
-        }
-
+        if (p.progreso >= 1) { pulsos.splice(i, 1); continue; }
         const a = nodos[p.invertido ? p.con.b : p.con.a];
         const b = nodos[p.invertido ? p.con.a : p.con.b];
-
         const px = a.x + (b.x - a.x) * p.progreso;
         const py = a.y + (b.y - a.y) * p.progreso;
-
-        // Cola del pulso
         const colaInicio = Math.max(0, p.progreso - 0.12);
         const pxCola = a.x + (b.x - a.x) * colaInicio;
         const pyCola = a.y + (b.y - a.y) * colaInicio;
-
         const grad = ctx.createLinearGradient(pxCola, pyCola, px, py);
-        grad.addColorStop(0, 'rgba(24, 119, 242, 0)');
-        grad.addColorStop(1, 'rgba(100, 180, 255, 0.9)');
-
-        ctx.beginPath();
-        ctx.moveTo(pxCola, pyCola);
-        ctx.lineTo(px, py);
-        ctx.strokeStyle = grad;
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-
-        // Destello en la punta
-        ctx.beginPath();
-        ctx.arc(px, py, 3, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(150, 210, 255, 0.95)';
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.arc(px, py, 7, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(24, 119, 242, 0.2)';
-        ctx.fill();
+        grad.addColorStop(0, 'rgba(24,119,242,0)');
+        grad.addColorStop(1, 'rgba(100,180,255,0.9)');
+        ctx.beginPath(); ctx.moveTo(pxCola, pyCola); ctx.lineTo(px, py);
+        ctx.strokeStyle = grad; ctx.lineWidth = 1.5; ctx.stroke();
+        ctx.beginPath(); ctx.arc(px, py, 3, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(150,210,255,0.95)'; ctx.fill();
+        ctx.beginPath(); ctx.arc(px, py, 7, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(24,119,242,0.2)'; ctx.fill();
     }
-
     requestAnimationFrame(dibujar);
 }
-
 dibujar();
 </script>
 
