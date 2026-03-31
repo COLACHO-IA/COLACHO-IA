@@ -7,7 +7,7 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: Arial, sans-serif; background: #0a0a1a; color: #ffffff; }
-        canvas { position: fixed; top: 0; left: 0; z-index: 0; opacity: 0.35; }
+        canvas { position: fixed; top: 0; left: 0; z-index: 0; }
         header, .hero, .seccion, footer { position: relative; z-index: 1; }
         header { background: rgba(10,10,26,0.92); padding: 20px 40px; border-bottom: 2px solid #1a3a5f; display: flex; align-items: center; justify-content: space-between; backdrop-filter: blur(4px); position: fixed; top: 0; width: 100%; z-index: 100; }
         header h1 { font-size: 24px; color: #ffffff; }
@@ -220,55 +220,127 @@
 const canvas = document.getElementById('fondo');
 const ctx = canvas.getContext('2d');
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-window.addEventListener('resize', () => {
+function resize() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-});
+}
+resize();
+window.addEventListener('resize', resize);
 
+// Nodos fijos en posiciones distribuidas
+const cantidad = 18;
 const nodos = [];
-const cantidad = 60;
 
 for (let i = 0; i < cantidad; i++) {
     nodos.push({
         x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
-        r: Math.random() * 2 + 1
+        y: Math.random() * canvas.height
     });
 }
+
+// Conexiones entre nodos cercanos
+const conexiones = [];
+for (let i = 0; i < nodos.length; i++) {
+    for (let j = i + 1; j < nodos.length; j++) {
+        const d = Math.hypot(nodos[i].x - nodos[j].x, nodos[i].y - nodos[j].y);
+        if (d < 320) {
+            conexiones.push({ a: i, b: j, largo: d });
+        }
+    }
+}
+
+// Pulsos que viajan por las conexiones
+const pulsos = [];
+
+function crearPulso() {
+    if (conexiones.length === 0) return;
+    const con = conexiones[Math.floor(Math.random() * conexiones.length)];
+    const invertido = Math.random() > 0.5;
+    pulsos.push({
+        con,
+        progreso: 0,
+        velocidad: 0.004 + Math.random() * 0.004,
+        invertido,
+        alpha: 1
+    });
+}
+
+// Crear pulsos cada 300ms
+setInterval(crearPulso, 300);
 
 function dibujar() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    for (let i = 0; i < nodos.length; i++) {
-        const n = nodos[i];
-        n.x += n.vx;
-        n.y += n.vy;
-        if (n.x < 0 || n.x > canvas.width) n.vx *= -1;
-        if (n.y < 0 || n.y > canvas.height) n.vy *= -1;
-
+    // Dibujar líneas base muy sutiles
+    for (const con of conexiones) {
+        const a = nodos[con.a];
+        const b = nodos[con.b];
         ctx.beginPath();
-        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(24, 119, 242, 0.6)';
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.strokeStyle = 'rgba(24, 119, 242, 0.06)';
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+    }
+
+    // Dibujar nodos
+    for (const n of nodos) {
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(24, 119, 242, 0.3)';
         ctx.fill();
 
-        for (let j = i + 1; j < nodos.length; j++) {
-            const m = nodos[j];
-            const dist = Math.hypot(n.x - m.x, n.y - m.y);
-            if (dist < 150) {
-                ctx.beginPath();
-                ctx.moveTo(n.x, n.y);
-                ctx.lineTo(m.x, m.y);
-                ctx.strokeStyle = `rgba(24, 119, 242, ${0.15 * (1 - dist / 150)})`;
-                ctx.lineWidth = 0.5;
-                ctx.stroke();
-            }
-        }
+        // Halo suave
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, 6, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(24, 119, 242, 0.06)';
+        ctx.fill();
     }
+
+    // Dibujar pulsos
+    for (let i = pulsos.length - 1; i >= 0; i--) {
+        const p = pulsos[i];
+        p.progreso += p.velocidad;
+
+        if (p.progreso >= 1) {
+            pulsos.splice(i, 1);
+            continue;
+        }
+
+        const a = nodos[p.invertido ? p.con.b : p.con.a];
+        const b = nodos[p.invertido ? p.con.a : p.con.b];
+
+        const px = a.x + (b.x - a.x) * p.progreso;
+        const py = a.y + (b.y - a.y) * p.progreso;
+
+        // Cola del pulso
+        const colaInicio = Math.max(0, p.progreso - 0.12);
+        const pxCola = a.x + (b.x - a.x) * colaInicio;
+        const pyCola = a.y + (b.y - a.y) * colaInicio;
+
+        const grad = ctx.createLinearGradient(pxCola, pyCola, px, py);
+        grad.addColorStop(0, 'rgba(24, 119, 242, 0)');
+        grad.addColorStop(1, 'rgba(100, 180, 255, 0.9)');
+
+        ctx.beginPath();
+        ctx.moveTo(pxCola, pyCola);
+        ctx.lineTo(px, py);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Destello en la punta
+        ctx.beginPath();
+        ctx.arc(px, py, 3, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(150, 210, 255, 0.95)';
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(px, py, 7, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(24, 119, 242, 0.2)';
+        ctx.fill();
+    }
+
     requestAnimationFrame(dibujar);
 }
 
